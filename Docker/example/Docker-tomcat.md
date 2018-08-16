@@ -149,4 +149,4 @@ echo ".................... docker container restart tomcat8 "
 
 ```
 
-![jenkins部署](C:\Users\user\Desktop\Docker\jenkins.png)
+![jenkins部署](http://github.com/0079123/myBusiness/raw/master/Docker/example/jenkins.png)

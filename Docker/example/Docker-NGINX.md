@@ -296,4 +296,4 @@ server {
 
 在浏览器输入`chrome://net-internals/`打开网络观察组件，然后选择`HTTP/2`
 
- ![](C:\Users\user\Desktop\Docker\http2.png)
+ ![](Docker/example/http2.png)

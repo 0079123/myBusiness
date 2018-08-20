@@ -23,7 +23,7 @@ read -p "请输入mysql端口(默认 3306):" msyqlPort
 	if [ -z "${msyqlPort}"];then
 		msyqlPort="3306"
 	fi
-docker run  --name $cName -d \
+sudo docker run  --name $cName -d \
 	-v $mysqlPath/conf:/etc/mysql/conf.d \
 	-v $mysqlPath/data:/var/lib/mysql \
 	-e MYSQL_ROOT_PASSWORD=$msyqlPsswd \

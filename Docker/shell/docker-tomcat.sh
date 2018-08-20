@@ -19,7 +19,7 @@ read -p "请输入mysql端口(默认 8080):" tomcatPort
 		tomcatPort="8080"
 	fi
 
-docker run --name $cName -d \
+sudo docker run --name $cName -d \
 	-v $tomcatPath/webapps:/usr/local/tomcat/webapps \
 	-v $tomcatPath/logs:/usr/local/tomcat/logs \
 	-v /etc/localtime:/etc/localtime:ro \

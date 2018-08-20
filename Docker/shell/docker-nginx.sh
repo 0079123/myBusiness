@@ -23,7 +23,7 @@ read -p "请输入https的端口号(默认 443):" httpsPort
 	if [ -z "${httpsPort}" ];then
 		httpsPort="443"
 	fi
-docker run --name $cName -d\
+sudo docker run --name $cName -d\
 	-v $nginxPath/log:/var/log/nginx\
 	-v $nginxPath/conf:/etc/nginx/conf.d:ro\
 	-v $nginxPath/html:/usr/share/nginx/html:ro\

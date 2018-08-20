@@ -3,7 +3,7 @@
 # 目录
 
 [Docker安装](#Docker_CE_安装)
-- [Ubuntu](#Ubuntu 安装 Docker CE)
+- [Ubuntu](#Ubuntu_安装_Docker_CE)
 - [CentOS](#CentOS 安装Docker CE)
 - [Debian](#Debian 安装Docker CE)
 - [Windows](#Windows 安装Docker CE)

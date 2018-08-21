@@ -85,6 +85,7 @@ Install_script(){
 	sudo sh get-docker.sh --mirror Aliyun
 }
 AddGroup_to_docker(){
+	sudo groupadd docker
 	sudo usermod -aG docker $USER
 }
 Show_version(){

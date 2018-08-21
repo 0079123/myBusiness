@@ -5,9 +5,9 @@ export PATH
 #=================================================
 #	System Required: CentOS/Debian/Ubuntu
 #	Description: Docker
-#	Version: 1.0.0
+#	Version: 1.0.1
 #	Author: hhyykk
-#	Date: 2018-8-20
+#	Date: 2018-8-21
 #=================================================
 
 docker_file="/usr/bin/docker"
@@ -41,22 +41,39 @@ check_installed_status(){
 check_pid(){
 	PID=`ps -ef| grep "docker"| grep -v grep| awk '{print $2}'`
 }
+Yum_install(){
+	#卸载系统自带版本
+	sudo yum remove docker \
+		docker-common \
+		docker-selinux \
+		docker-engine -y
+	#下载依赖
+	sudo yum update
+	sudo yum install -y yum-utils \
+	device-mapper-persistent-data \
+	lvm2 
+}
+Aptget_install(){
+	#卸载系统自带版本
+	sudo apt-get remove docker \
+		docker-engine \
+		docker.io
+	#下载依赖
+	apt-get update 
+	apt-get -y install \
+	apt-transport-https \
+	ca-certificates \
+	curl \
+	gnupg2 \
+	lsb-release \
+	software-properties-common 
+}
 
 Installation_dependency(){
-	if [[ ${release}="centos" ]]; then
-		sudo yum update
-		sudo yum install -y yum-utils \
-		device-mapper-persistent-data \
-		lvm2 
+	if [[ ${release} == "centos" ]]; then
+		Yum_install
 	else
-		apt-get update 
-		apt-get -y install \
-		apt-transport-https \
-		ca-certificates \
-		curl \
-		gnupg2 \
-		lsb-release \
-		software-properties-common 
+		Aptget_install
 	fi
 }
 
@@ -124,24 +141,26 @@ Install_docker(){
 	echo -e "${Info} 开始安装..."
 	Install_script
 	echo -e "${Info} 所有步骤 安装完毕，开始启动..."
-	AddGroup_to_docker
 	Start_docker
+	AddGroup_to_docker
 	echo -e "${Info} 当前版本..."
 	Show_version
 	menu_status
 }
 
+Yum_unstall(){
+	sudo yum remove -y docker-ce 
+}
+Aptget_unstall(){
+	sudo apt-get -y remove docker-ce
+}
+
 #卸载
 Uninstall_docker(){
-	if [[ ${release}="centos" ]]; then
-		sudo yum remove docker \
-		docker-common \
-		docker-selinux \
-		docker-engine -y
+	if [[ ${release} == "centos" ]]; then
+		Yum_unstall
 	else
-		sudo apt-get remove docker \
-		docker-engine \
-		docker.io
+		Aptget_unstall
 	fi
 	menu_status
 }

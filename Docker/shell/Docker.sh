@@ -5,7 +5,7 @@ export PATH
 #=================================================
 #	System Required: CentOS/Debian/Ubuntu
 #	Description: Docker
-#	Version: 1.0.1
+#	Version: 1.0.2
 #	Author: hhyykk
 #	Date: 2018-8-21
 #=================================================
@@ -20,17 +20,17 @@ Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
 check_sys(){
 	if [[ -f /etc/redhat-release ]]; then
 		release="centos"
-	elif cat /etc/issue | grep -q -E -i "debian"; then
+	elif cat /etc/issue | grep -E -i "debian"; then
 		release="debian"
-	elif cat /etc/issue | grep -q -E -i "ubuntu"; then
+	elif cat /etc/issue | grep -E -i "ubuntu"; then
 		release="ubuntu"
-	elif cat /etc/issue | grep -q -E -i "centos|red hat|redhat"; then
+	elif cat /etc/issue | grep -E -i "centos|red hat|redhat"; then
 		release="centos"
-	elif cat /proc/version | grep -q -E -i "debian"; then
+	elif cat /proc/version | grep -E -i "debian"; then
 		release="debian"
-	elif cat /proc/version | grep -q -E -i "ubuntu"; then
+	elif cat /proc/version | grep -E -i "ubuntu"; then
 		release="ubuntu"
-	elif cat /proc/version | grep -q -E -i "centos|red hat|redhat"; then
+	elif cat /proc/version | grep  -E -i "centos|red hat|redhat"; then
 		release="centos"
     fi
 	bit=`uname -m`
@@ -55,12 +55,12 @@ Yum_install(){
 }
 Aptget_install(){
 	#卸载系统自带版本
-	sudo apt-get remove docker \
-		docker-engine \
-		docker.io
+	sudo apt-get remove docker\
+		docker-engine\
+		docker.io -y
 	#下载依赖
-	apt-get update 
-	apt-get -y install \
+	sudo apt-get update 
+	sudo apt-get -y install \
 	apt-transport-https \
 	ca-certificates \
 	curl \
@@ -141,7 +141,7 @@ Install_docker(){
 	echo -e "${Info} 开始安装..."
 	Install_script
 	echo -e "${Info} 所有步骤 安装完毕，开始启动..."
-	Start_docker
+#	Start_docker
 	AddGroup_to_docker
 	echo -e "${Info} 当前版本..."
 	Show_version

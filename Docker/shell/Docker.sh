@@ -5,9 +5,9 @@ export PATH
 #=================================================
 #	System Required: CentOS/Debian/Ubuntu
 #	Description: Docker
-#	Version: 1.0.2
+#	Version: 1.0.5
 #	Author: hhyykk
-#	Date: 2018-8-21
+#	Date: 2018-8-28
 #=================================================
 
 docker_file="/usr/bin/docker"
@@ -20,17 +20,17 @@ Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
 check_sys(){
 	if [[ -f /etc/redhat-release ]]; then
 		release="centos"
-	elif cat /etc/issue | grep -E -i "debian"; then
+	elif cat /etc/issue | grep -q -E -i "debian"; then
 		release="debian"
-	elif cat /etc/issue | grep -E -i "ubuntu"; then
+	elif cat /etc/issue | grep -q -E -i "ubuntu"; then
 		release="ubuntu"
-	elif cat /etc/issue | grep -E -i "centos|red hat|redhat"; then
+	elif cat /etc/issue | grep -q -E -i "centos|red hat|redhat"; then
 		release="centos"
-	elif cat /proc/version | grep -E -i "debian"; then
+	elif cat /proc/version | grep -q -E -i "debian"; then
 		release="debian"
-	elif cat /proc/version | grep -E -i "ubuntu"; then
+	elif cat /proc/version | grep -q -E -i "ubuntu"; then
 		release="ubuntu"
-	elif cat /proc/version | grep  -E -i "centos|red hat|redhat"; then
+	elif cat /proc/version | grep -q -E -i "centos|red hat|redhat"; then
 		release="centos"
     fi
 	bit=`uname -m`
@@ -78,11 +78,11 @@ Installation_dependency(){
 }
 
 Download_docker(){
-	curl -fsSL get.docker.com -o get-docker.sh
+	curl -fsSL get.docker.com -o /tmp/get-docker.sh
 }
 
 Install_script(){
-	sudo sh get-docker.sh --mirror Aliyun
+	sudo sh /tmp/get-docker.sh --mirror Aliyun
 }
 AddGroup_to_docker(){
 	sudo groupadd docker
@@ -142,7 +142,7 @@ Install_docker(){
 	echo -e "${Info} 开始安装..."
 	Install_script
 	echo -e "${Info} 所有步骤 安装完毕，开始启动..."
-#	Start_docker
+	Start_docker
 	AddGroup_to_docker
 	echo -e "${Info} 当前版本..."
 	Show_version
@@ -158,6 +158,7 @@ Aptget_unstall(){
 
 #卸载
 Uninstall_docker(){
+	check_sys
 	if [[ ${release} == "centos" ]]; then
 		Yum_unstall
 	else
@@ -321,7 +322,8 @@ menu_status(){
 		echo -e " 当前状态: ${Red_font_prefix}未安装${Font_color_suffix}"
 	fi
 }
-
+while :
+do
 echo && echo -e "请输入一个数字来选择选项
  ${Green_font_prefix}1.${Font_color_suffix} 安装 Docker
  ${Green_font_prefix}2.${Font_color_suffix} 卸载 Docker
@@ -374,3 +376,4 @@ case "$num" in
 	echo "请输入正确数字 [1-9]"
 	;;
 esac
+done

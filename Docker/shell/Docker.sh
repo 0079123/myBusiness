@@ -5,7 +5,7 @@ export PATH
 #=================================================
 #	System Required: CentOS/Debian/Ubuntu
 #	Description: Docker
-#	Version: 1.0.5
+#	Version: 1.0.6
 #	Author: hhyykk
 #	Date: 2018-8-28
 #=================================================
@@ -130,6 +130,10 @@ Show_result_mysql(){
 	echo "数据库路径: $mysqlPath/data"
 	echo
 }
+Init_docker(){
+	if [[ ${release} == "centos" ]]; then
+		Start_docker
+}
 
 #安装
 Install_docker(){
@@ -142,7 +146,7 @@ Install_docker(){
 	echo -e "${Info} 开始安装..."
 	Install_script
 	echo -e "${Info} 所有步骤 安装完毕，开始启动..."
-	Start_docker
+	Init_docker
 	AddGroup_to_docker
 	echo -e "${Info} 当前版本..."
 	Show_version

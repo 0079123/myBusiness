@@ -133,6 +133,9 @@ Show_result_mysql(){
 Init_docker(){
 	if [[ ${release} == "centos" ]]; then
 		Start_docker
+		AddGroup_to_docker
+	else
+		AddGroup_to_docker
 	fi
 }
 
@@ -148,7 +151,6 @@ Install_docker(){
 	Install_script
 	echo -e "${Info} 所有步骤 安装完毕，开始启动..."
 	Init_docker
-	AddGroup_to_docker
 	echo -e "${Info} 当前版本..."
 	Show_version
 	menu_status

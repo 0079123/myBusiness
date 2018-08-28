@@ -5,7 +5,7 @@ export PATH
 #=================================================
 #	System Required: CentOS/Debian/Ubuntu
 #	Description: Docker
-#	Version: 1.0.6
+#	Version: 1.0.7
 #	Author: hhyykk
 #	Date: 2018-8-28
 #=================================================
@@ -133,6 +133,7 @@ Show_result_mysql(){
 Init_docker(){
 	if [[ ${release} == "centos" ]]; then
 		Start_docker
+	fi
 }
 
 #安装

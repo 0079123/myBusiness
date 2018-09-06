@@ -5,11 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS/Debian/Ubuntu
 #	Description: Docker
-#	Version: 1.0.7
+#	Version: 1.1.0
 #	Author: hhyykk
-#	Date: 2018-8-28
+#	Date: 2018-9-6
 #=================================================
-sh_ver="1.0.7"
+
+sh_ver="1.1.0"
 docker_file="/usr/bin/docker"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -316,6 +317,31 @@ sudo docker run  --name $cName -d \
 	fi
 }
 
+Update_Shell(){
+	echo -e "当前版本为 [ ${sh_ver} ]，开始检测最新版本..."
+	
+	sh_new_ver=$(wget --no-check-certificate -qO- "https://raw.githubusercontent.com/0079123/myBusiness/master/Docker/shell/Docker.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="github"
+	[[ -z ${sh_new_ver} ]] && echo -e "${Error} 检测最新版本失败 !" && exit 0
+	if [[ ${sh_new_ver} != ${sh_ver} ]]; then
+		echo -e "发现新版本[ ${sh_new_ver} ]，是否更新？[Y/n]"
+		stty erase '^H' && read -p "(默认: y):" yn
+		[[ -z "${yn}" ]] && yn="y"
+		if [[ ${yn} == [Yy] ]]; then
+		
+			if [[ ${sh_new_type} == "github" ]]; then
+				wget -N --no-check-certificate "https://raw.githubusercontent.com/0079123/myBusiness/master/Docker/shell/Docker.sh" && chmod +x Docker.sh
+			#else
+				###预留
+			fi
+			echo -e "脚本已更新为最新版本[ ${sh_new_ver} ] !"
+		else
+			echo && echo "	已取消..." && echo
+		fi
+	else
+		echo -e "当前已是最新版本[ ${sh_new_ver} ] !"
+	fi
+}
+
 #显示菜单状态
 menu_status(){
 	if [[ -e ${docker_file} ]]; then
@@ -329,6 +355,11 @@ menu_status(){
 		echo -e " 当前状态: ${Red_font_prefix}未安装${Font_color_suffix}"
 	fi
 }
+
+check_sys
+[[ ${release} != "debian" ]] && [[ ${release} != "ubuntu" ]] && [[ ${release} != "centos" ]] && echo -e "${Error} 本脚本不支持当前系统 ${release} !" && exit 1
+echo -e "  Docker一键管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
+  ---- hhyykk | github.com/0079123 ---"
 while :
 do
 echo && echo -e "请输入一个数字来选择选项
@@ -344,10 +375,11 @@ echo && echo -e "请输入一个数字来选择选项
  ${Green_font_prefix}8.${Font_color_suffix} 创建 Tomcat
  ${Green_font_prefix}9.${Font_color_suffix} 创建 Mysql
 ————————————————————
-${Green_font_prefix}0.${Font_color_suffix} 退出菜单
+ ${Green_font_prefix}10.${Font_color_suffix}更新脚本
+ ${Green_font_prefix}0.${Font_color_suffix} 退出菜单
 ————————————————————" && echo
 menu_status
-stty erase '^H' && read -p " 请输入数字 [0-9]:" num
+stty erase '^H' && read -p " 请输入数字 [0-10]:" num
 case "$num" in
 	0)
 	exit
@@ -379,8 +411,11 @@ case "$num" in
 	9)
 	Create_mysql
 	;;
+	10)
+	Update_Shell
+	;;
 	*)
-	echo "请输入正确数字 [1-9]"
+	echo "请输入正确数字 [1-10]"
 	;;
 esac
 done

@@ -5,11 +5,11 @@ export PATH
 #=================================================
 #	System Required: CentOS/Debian/Ubuntu
 #	Description: openssl
-#	Version: 1.0.5
+#	Version: 1.0.7
 #	Author: hhyykk
 #	Date: 2018-9-5
 #=================================================
-sh_ver="1.0.5"
+sh_ver="1.0.7"
 ssl_file="/home/ssl"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -235,7 +235,7 @@ nsComment           = "comment"
 extendedKeyUsage  = serverAuth, clientAuth
 
 [ alternate_names ]
-DNS.1         = ${Cdomain}
+DNS.1 = ${Cdomain}
 DNS.2 = localhost
 DNS.3 = 127.0.0.1
 # IPv4 localhost

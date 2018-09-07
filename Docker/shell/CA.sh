@@ -5,11 +5,11 @@ export PATH
 #=================================================
 #	System Required: CentOS/Debian/Ubuntu
 #	Description: openssl
-#	Version: 1.0.7
+#	Version: 1.0.8
 #	Author: hhyykk
-#	Date: 2018-9-5
+#	Date: 2018-9-7
 #=================================================
-sh_ver="1.0.7"
+sh_ver="1.0.8"
 ssl_file="/home/ssl"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -58,7 +58,7 @@ Create_By_Ip(){
 }
 Create_IP_config(){
 	read -p "请输入使用的IP:" Cip
-	if [ -z "${Cip}" ];then
+	if [[ -z "${Cip}" ]];then
 		 echo -e "${Error} IP不能为空!" && exit 1
 	fi
 	mkdir -p ${ssl_file}
@@ -141,7 +141,7 @@ END_TEXT
 Creat_IP_Cert(){
 	cd ${ssl_file}
 	read -p "请输入证书有效时间 单位年(默认10年):" CY
-	if [ -z "${CY}" ];then
+	if [[ -z "${CY}" ]];then
 		CY="10"
 	fi
 		CY=$((${CY}*365))
@@ -161,7 +161,7 @@ Create_By_Domain(){
 }
 Create_Domain_config(){
 	read -p "请输入使用的域名:" Cdomain
-	if [ -z "${Cdomain}" ];then
+	if [[ -z "${Cdomain}" ]];then
 		 echo -e "${Error} 域名不能为空!" && exit 1
 	fi
 	mkdir -p ${ssl_file}
@@ -247,7 +247,7 @@ END_TEXT
 Creat_Domain_Cert(){
 	cd ${ssl_file}
 	read -p "请输入证书有效时间 单位年(默认10年):" CY
-	if [ -z "${CY}" ];then
+	if [[ -z "${CY}" ]];then
 		CY="10"
 	fi
 		CY=$((${CY}*365))

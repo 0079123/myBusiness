@@ -300,7 +300,7 @@ read -p "请输入mysql端口(默认 3306):" msyqlPort
 	if [[ -z "${msyqlPsswd}" ]];then
 		msyqlPsswd="123456"
 	fi
-	if [[ -z "${msyqlPort}"]];then
+	if [[ -z "${msyqlPort}" ]];then
 		msyqlPort="3306"
 	fi
 sudo docker run  --name $cName -d \

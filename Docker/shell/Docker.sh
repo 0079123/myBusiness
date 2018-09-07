@@ -297,7 +297,7 @@ read -p "请输入mysql端口(默认 3306):" msyqlPort
 	if [[ -z "${mysqlPath}" ]];then
 		mysqlPath="/home/mysql"
 	fi
-	if [[ -z "${msyqlPsswd}"]];then
+	if [[ -z "${msyqlPsswd}" ]];then
 		msyqlPsswd="123456"
 	fi
 	if [[ -z "${msyqlPort}"]];then

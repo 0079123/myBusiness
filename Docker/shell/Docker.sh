@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS/Debian/Ubuntu
 #	Description: Docker
-#	Version: 1.1.0
+#	Version: 1.1.1
 #	Author: hhyykk
-#	Date: 2018-9-6
+#	Date: 2018-9-7
 #=================================================
 
-sh_ver="1.1.0"
+sh_ver="1.1.1"
 docker_file="/usr/bin/docker"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -216,19 +216,19 @@ Create_nginx(){
 	read -p "请输入部署nginx的路径(默认 /home/nginx):" nginxPath
 	read -p "请输入http的端口号(默认 80):" httpPort
 	read -p "请输入https的端口号(默认 443):" httpsPort
-	if [ -z "${tag}" ];then
+	if [[ -z "${tag}" ]];then
 		tag="stable"
 	fi
-	if [ -z "${cName}" ];then
+	if [[ -z "${cName}" ]];then
 		cName="nginx"
 	fi
-	if [ -z "${nginxPath}" ];then
+	if [[ -z "${nginxPath}" ]];then
 		nginxPath="/home/nginx"
 	fi
-	if [ -z "${httpPort}" ];then
+	if [[ -z "${httpPort}" ]];then
 		httpPort="80"
 	fi
-	if [ -z "${httpsPort}" ];then
+	if [[ -z "${httpsPort}" ]];then
 		httpsPort="443"
 	fi
 sudo docker run --name $cName -d\
@@ -252,16 +252,16 @@ read -p "请选择版本号(默认 9):" tag
 read -p "请输入容器名称(默认 tomcat):" cName
 read -p "请输入部署mysql的路径(默认 /home/tomcat):" tomcatPath
 read -p "请输入mysql端口(默认 8080):" tomcatPort
-	if [ -z "${tag}" ];then
+	if [[ -z "${tag}" ]];then
 		tag="9"
 	fi	
-	if [ -z "${cName}" ];then
+	if [[ -z "${cName}" ]];then
 		cName="tomcat"
 	fi	
-	if [ -z "${tomcatPath}" ];then
+	if [[ -z "${tomcatPath}" ]];then
 		tomcatPath="/home/tomcat"
 	fi	
-	if [ -z "${tomcatPort}" ];then
+	if [[ -z "${tomcatPort}" ]];then
 		tomcatPort="8080"
 	fi
 
@@ -288,19 +288,19 @@ read -p "请输入容器名称(默认 mysql):" cName
 read -p "请输入部署mysql的路径(默认 /home/mysql):" mysqlPath
 read -p "请设置root密码(默认 123456):" msyqlPsswd
 read -p "请输入mysql端口(默认 3306):" msyqlPort
-	if [ -z "${tag}" ];then
+	if [[ -z "${tag}" ]];then
 		tag="5"
 	fi
-	if [ -z "${cName}" ];then
+	if [[ -z "${cName}" ]];then
 		cName="mysql"
 	fi
-	if [ -z "${mysqlPath}"];then
+	if [[ -z "${mysqlPath}" ]];then
 		mysqlPath="/home/mysql"
 	fi
-	if [ -z "${msyqlPsswd}"];then
+	if [[ -z "${msyqlPsswd}"]];then
 		msyqlPsswd="123456"
 	fi
-	if [ -z "${msyqlPort}"];then
+	if [[ -z "${msyqlPort}"]];then
 		msyqlPort="3306"
 	fi
 sudo docker run  --name $cName -d \

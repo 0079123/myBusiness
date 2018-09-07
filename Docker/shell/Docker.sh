@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS/Debian/Ubuntu
 #	Description: Docker
-#	Version: 1.1.1
+#	Version: 1.1.2
 #	Author: hhyykk
 #	Date: 2018-9-7
 #=================================================
 
-sh_ver="1.1.1"
+sh_ver="1.1.2"
 docker_file="/usr/bin/docker"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"

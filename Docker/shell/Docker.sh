@@ -5,12 +5,11 @@ export PATH
 #=================================================
 #	System Required: CentOS/Debian/Ubuntu
 #	Description: Docker
-#	Version: 1.1.2
+#	Version: 1.0.3
 #	Author: hhyykk
-#	Date: 2018-9-7
+#	Date: 2018-11-20
 #=================================================
 
-sh_ver="1.1.2"
 docker_file="/usr/bin/docker"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -21,17 +20,17 @@ Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
 check_sys(){
 	if [[ -f /etc/redhat-release ]]; then
 		release="centos"
-	elif cat /etc/issue | grep -q -E -i "debian"; then
+	elif cat /etc/issue | grep -E -i "debian"; then
 		release="debian"
-	elif cat /etc/issue | grep -q -E -i "ubuntu"; then
+	elif cat /etc/issue | grep -E -i "ubuntu"; then
 		release="ubuntu"
-	elif cat /etc/issue | grep -q -E -i "centos|red hat|redhat"; then
+	elif cat /etc/issue | grep -E -i "centos|red hat|redhat"; then
 		release="centos"
-	elif cat /proc/version | grep -q -E -i "debian"; then
+	elif cat /proc/version | grep -E -i "debian"; then
 		release="debian"
-	elif cat /proc/version | grep -q -E -i "ubuntu"; then
+	elif cat /proc/version | grep -E -i "ubuntu"; then
 		release="ubuntu"
-	elif cat /proc/version | grep -q -E -i "centos|red hat|redhat"; then
+	elif cat /proc/version | grep  -E -i "centos|red hat|redhat"; then
 		release="centos"
     fi
 	bit=`uname -m`
@@ -79,11 +78,11 @@ Installation_dependency(){
 }
 
 Download_docker(){
-	curl -fsSL get.docker.com -o /tmp/get-docker.sh
+	curl -fsSL get.docker.com -o get-docker.sh
 }
 
 Install_script(){
-	sudo sh /tmp/get-docker.sh --mirror Aliyun
+	sudo sh get-docker.sh --mirror Aliyun
 }
 AddGroup_to_docker(){
 	sudo groupadd docker
@@ -131,14 +130,6 @@ Show_result_mysql(){
 	echo "数据库路径: $mysqlPath/data"
 	echo
 }
-Init_docker(){
-	if [[ ${release} == "centos" ]]; then
-		Start_docker
-		AddGroup_to_docker
-	else
-		AddGroup_to_docker
-	fi
-}
 
 #安装
 Install_docker(){
@@ -151,7 +142,8 @@ Install_docker(){
 	echo -e "${Info} 开始安装..."
 	Install_script
 	echo -e "${Info} 所有步骤 安装完毕，开始启动..."
-	Init_docker
+#	Start_docker
+	AddGroup_to_docker
 	echo -e "${Info} 当前版本..."
 	Show_version
 	menu_status
@@ -166,7 +158,6 @@ Aptget_unstall(){
 
 #卸载
 Uninstall_docker(){
-	check_sys
 	if [[ ${release} == "centos" ]]; then
 		Yum_unstall
 	else
@@ -216,19 +207,19 @@ Create_nginx(){
 	read -p "请输入部署nginx的路径(默认 /home/nginx):" nginxPath
 	read -p "请输入http的端口号(默认 80):" httpPort
 	read -p "请输入https的端口号(默认 443):" httpsPort
-	if [[ -z "${tag}" ]];then
+	if [ -z "${tag}" ];then
 		tag="stable"
 	fi
-	if [[ -z "${cName}" ]];then
+	if [ -z "${cName}" ];then
 		cName="nginx"
 	fi
-	if [[ -z "${nginxPath}" ]];then
+	if [ -z "${nginxPath}" ];then
 		nginxPath="/home/nginx"
 	fi
-	if [[ -z "${httpPort}" ]];then
+	if [ -z "${httpPort}" ];then
 		httpPort="80"
 	fi
-	if [[ -z "${httpsPort}" ]];then
+	if [ -z "${httpsPort}" ];then
 		httpsPort="443"
 	fi
 sudo docker run --name $cName -d\
@@ -236,6 +227,7 @@ sudo docker run --name $cName -d\
 	-v $nginxPath/conf:/etc/nginx/conf.d:ro\
 	-v $nginxPath/html:/usr/share/nginx/html:ro\
 	-p $httpPort:80  -p $httpsPort:443\
+	--restart=on-failure:5\
 	nginx:$tag	
 	#检查是否创建
 	if docker ps -a | grep $cName |awk {'print $(NF)'} ;then
@@ -252,16 +244,16 @@ read -p "请选择版本号(默认 9):" tag
 read -p "请输入容器名称(默认 tomcat):" cName
 read -p "请输入部署mysql的路径(默认 /home/tomcat):" tomcatPath
 read -p "请输入mysql端口(默认 8080):" tomcatPort
-	if [[ -z "${tag}" ]];then
+	if [ -z "${tag}" ];then
 		tag="9"
 	fi	
-	if [[ -z "${cName}" ]];then
+	if [ -z "${cName}" ];then
 		cName="tomcat"
 	fi	
-	if [[ -z "${tomcatPath}" ]];then
+	if [ -z "${tomcatPath}" ];then
 		tomcatPath="/home/tomcat"
 	fi	
-	if [[ -z "${tomcatPort}" ]];then
+	if [ -z "${tomcatPort}" ];then
 		tomcatPort="8080"
 	fi
 
@@ -271,6 +263,7 @@ sudo docker run --name $cName -d \
 	-v /etc/localtime:/etc/localtime:ro \
 	-e TZ="Asia/Shanghai" \
 	-p $tomcatPort:8080 \
+	--restart=on-failure:5\
 	tomcat:$tag
 	if docker ps -a | grep $cName |awk {'print $(NF)'} ;then
 		Show_result_tomcat
@@ -288,19 +281,19 @@ read -p "请输入容器名称(默认 mysql):" cName
 read -p "请输入部署mysql的路径(默认 /home/mysql):" mysqlPath
 read -p "请设置root密码(默认 123456):" msyqlPsswd
 read -p "请输入mysql端口(默认 3306):" msyqlPort
-	if [[ -z "${tag}" ]];then
+	if [ -z "${tag}" ];then
 		tag="5"
 	fi
-	if [[ -z "${cName}" ]];then
+	if [ -z "${cName}" ];then
 		cName="mysql"
 	fi
-	if [[ -z "${mysqlPath}" ]];then
+	if [ -z "${mysqlPath}"];then
 		mysqlPath="/home/mysql"
 	fi
-	if [[ -z "${msyqlPsswd}" ]];then
+	if [ -z "${msyqlPsswd}"];then
 		msyqlPsswd="123456"
 	fi
-	if [[ -z "${msyqlPort}" ]];then
+	if [ -z "${msyqlPort}"];then
 		msyqlPort="3306"
 	fi
 sudo docker run  --name $cName -d \
@@ -308,37 +301,13 @@ sudo docker run  --name $cName -d \
 	-v $mysqlPath/data:/var/lib/mysql \
 	-e MYSQL_ROOT_PASSWORD=$msyqlPsswd \
 	-p $msyqlPort:3306 \
+	--restart=on-failure:5\
 	mysql:$tag
 	if docker ps -a | grep $cName |awk {'print $(NF)'} ;then
 		Show_result_mysql
 	
 		else
 			echo -e "${Error} mysql容器创建失败 请检查!"
-	fi
-}
-
-Update_Shell(){
-	echo -e "当前版本为 [ ${sh_ver} ]，开始检测最新版本..."
-	
-	sh_new_ver=$(wget --no-check-certificate -qO- "https://raw.githubusercontent.com/0079123/myBusiness/master/Docker/shell/Docker.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="github"
-	[[ -z ${sh_new_ver} ]] && echo -e "${Error} 检测最新版本失败 !" && exit 0
-	if [[ ${sh_new_ver} != ${sh_ver} ]]; then
-		echo -e "发现新版本[ ${sh_new_ver} ]，是否更新？[Y/n]"
-		stty erase '^H' && read -p "(默认: y):" yn
-		[[ -z "${yn}" ]] && yn="y"
-		if [[ ${yn} == [Yy] ]]; then
-		
-			if [[ ${sh_new_type} == "github" ]]; then
-				wget -N --no-check-certificate "https://raw.githubusercontent.com/0079123/myBusiness/master/Docker/shell/Docker.sh" && chmod +x Docker.sh
-			#else
-				###预留
-			fi
-			echo -e "脚本已更新为最新版本[ ${sh_new_ver} ] !"
-		else
-			echo && echo "	已取消..." && echo
-		fi
-	else
-		echo -e "当前已是最新版本[ ${sh_new_ver} ] !"
 	fi
 }
 
@@ -356,12 +325,6 @@ menu_status(){
 	fi
 }
 
-check_sys
-[[ ${release} != "debian" ]] && [[ ${release} != "ubuntu" ]] && [[ ${release} != "centos" ]] && echo -e "${Error} 本脚本不支持当前系统 ${release} !" && exit 1
-echo -e "  Docker一键管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
-  ---- hhyykk | github.com/0079123 ---"
-while :
-do
 echo && echo -e "请输入一个数字来选择选项
  ${Green_font_prefix}1.${Font_color_suffix} 安装 Docker
  ${Green_font_prefix}2.${Font_color_suffix} 卸载 Docker
@@ -375,11 +338,10 @@ echo && echo -e "请输入一个数字来选择选项
  ${Green_font_prefix}8.${Font_color_suffix} 创建 Tomcat
  ${Green_font_prefix}9.${Font_color_suffix} 创建 Mysql
 ————————————————————
- ${Green_font_prefix}10.${Font_color_suffix}更新脚本
- ${Green_font_prefix}0.${Font_color_suffix} 退出菜单
+${Green_font_prefix}0.${Font_color_suffix} 退出菜单
 ————————————————————" && echo
 menu_status
-stty erase '^H' && read -p " 请输入数字 [0-10]:" num
+stty erase '^H' && read -p " 请输入数字 [0-9]:" num
 case "$num" in
 	0)
 	exit
@@ -411,11 +373,7 @@ case "$num" in
 	9)
 	Create_mysql
 	;;
-	10)
-	Update_Shell
-	;;
 	*)
-	echo "请输入正确数字 [1-10]"
+	echo "请输入正确数字 [1-9]"
 	;;
 esac
-done

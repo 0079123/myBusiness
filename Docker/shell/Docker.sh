@@ -5,7 +5,7 @@ export PATH
 #=================================================
 #	System Required: CentOS/Debian/Ubuntu
 #	Description: Docker
-#	Version: 1.0.3
+#	Version: 1.0.5
 #	Author: hhyykk
 #	Date: 2018-11-20
 #=================================================
@@ -223,11 +223,11 @@ Create_nginx(){
 		httpsPort="443"
 	fi
 sudo docker run --name $cName -d\
+	--restart=unless-stopped \
 	-v $nginxPath/log:/var/log/nginx\
 	-v $nginxPath/conf:/etc/nginx/conf.d:ro\
 	-v $nginxPath/html:/usr/share/nginx/html:ro\
 	-p $httpPort:80  -p $httpsPort:443\
-	--restart=on-failure:5\
 	nginx:$tag	
 	#检查是否创建
 	if docker ps -a | grep $cName |awk {'print $(NF)'} ;then
@@ -258,12 +258,12 @@ read -p "请输入mysql端口(默认 8080):" tomcatPort
 	fi
 
 sudo docker run --name $cName -d \
+	--restart=unless-stopped \
 	-v $tomcatPath/webapps:/usr/local/tomcat/webapps \
 	-v $tomcatPath/logs:/usr/local/tomcat/logs \
 	-v /etc/localtime:/etc/localtime:ro \
 	-e TZ="Asia/Shanghai" \
 	-p $tomcatPort:8080 \
-	--restart=on-failure:5\
 	tomcat:$tag
 	if docker ps -a | grep $cName |awk {'print $(NF)'} ;then
 		Show_result_tomcat
@@ -297,11 +297,11 @@ read -p "请输入mysql端口(默认 3306):" msyqlPort
 		msyqlPort="3306"
 	fi
 sudo docker run  --name $cName -d \
+	--restart=unless-stopped \
 	-v $mysqlPath/conf:/etc/mysql/conf.d \
 	-v $mysqlPath/data:/var/lib/mysql \
 	-e MYSQL_ROOT_PASSWORD=$msyqlPsswd \
 	-p $msyqlPort:3306 \
-	--restart=on-failure:5\
 	mysql:$tag
 	if docker ps -a | grep $cName |awk {'print $(NF)'} ;then
 		Show_result_mysql

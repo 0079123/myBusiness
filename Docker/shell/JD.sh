@@ -5,11 +5,11 @@ export PATH
 #=================================================
 #	System Required: Red Hat 7 
 #	Description: Production Environment
-#	Version: 1.0.2
+#	Version: 1.0.3
 #	Author: hhyykk
 #	Date: 2019-4-28
 #=================================================
-sh_ver="1.0.2"
+sh_ver="1.0.3"
 docker_file="/usr/bin/docker"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -125,12 +125,12 @@ sudo docker run --name $cName -d \
 }
 
 Create_tomcat(){
-	read -p "请选择版本号(默认 9):" tag
+	read -p "请选择版本号(默认 9-jre8):" tag
 	read -p "请输入容器名称(默认 tomcat):" cName
 	read -p "请输入部署mysql的路径(默认 /home/tomcat):" tomcatPath
 	read -p "请输入mysql端口(默认 8080):" tomcatPort
 		if [ -z "${tag}" ];then
-			tag="9"
+			tag="9-jre8"
 		fi	
 		if [ -z "${cName}" ];then
 			cName="tomcat"

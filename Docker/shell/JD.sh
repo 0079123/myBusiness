@@ -5,11 +5,11 @@ export PATH
 #=================================================
 #	System Required: Red Hat 7 
 #	Description: Production Environment
-#	Version: 1.0.3
+#	Version: 1.0.3.1
 #	Author: hhyykk
 #	Date: 2019-4-28
 #=================================================
-sh_ver="1.0.3"
+sh_ver="1.0.3.1"
 docker_file="/usr/bin/docker"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -207,7 +207,7 @@ Create_redis(){
 		
 sudo docker run -d --name $cName \
 	-p $cPort:6379 \
-	0079123/redis --appendonly yes
+	0079123/redis /usr/local/etc/redis/redis.conf --appendonly yes
 	if docker ps -a | grep $cName |awk {'print $(NF)'} ;then
 		Show_result_redis
 	

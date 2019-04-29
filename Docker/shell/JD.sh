@@ -5,11 +5,11 @@ export PATH
 #=================================================
 #	System Required: Red Hat 7 
 #	Description: Production Environment
-#	Version: 1.0.3.1
+#	Version: 1.0.3.2
 #	Author: hhyykk
-#	Date: 2019-4-28
+#	Date: 2019-4-29
 #=================================================
-sh_ver="1.0.3.1"
+sh_ver="1.0.3.2"
 docker_file="/usr/bin/docker"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -110,6 +110,7 @@ Create_nginx(){
 	fi
 	
 sudo docker run --name $cName -d \
+	--restart=unless-stopped \
 	--privileged=true \
 	-v $nginxPath/log:/var/log/nginx \
 	-v $nginxPath/conf:/etc/nginx/conf.d:ro \
@@ -143,6 +144,7 @@ Create_tomcat(){
 		fi
 		
 sudo docker run --name $cName -d \
+	--restart=unless-stopped \
 	--privileged=true \
 	-v $tomcatPath/webapps:/usr/local/tomcat/webapps \
 	-v $tomcatPath/logs:/usr/local/tomcat/logs \
@@ -181,6 +183,7 @@ Create_mysql(){
 		fi
 
 sudo docker run  --name $cName -d \
+	--restart=unless-stopped \
 	-v $mysqlPath/conf:/etc/mysql/conf.d \
 	-v $mysqlPath/data:/var/lib/mysql \
 	-e MYSQL_ROOT_PASSWORD=$msyqlPsswd \
@@ -206,6 +209,7 @@ Create_redis(){
 		fi
 		
 sudo docker run -d --name $cName \
+	--restart=unless-stopped \
 	-p $cPort:6379 \
 	0079123/redis /usr/local/etc/redis/redis.conf --appendonly yes
 	if docker ps -a | grep $cName |awk {'print $(NF)'} ;then
@@ -222,6 +226,7 @@ Create_srs(){
 			cName="srs"
 		fi
 docker run -d --name srs \
+	--restart=unless-stopped \
 	--privileged=true \
 	-v /home/srs/conf:/srs/conf \
 	-p 1935:1935 -p 1985:1985 -p 8848:8080 \

@@ -5,11 +5,11 @@ export PATH
 #=================================================
 #	System Required: Red Hat 7 
 #	Description: Production Environment
-#	Version: 1.0.3.2
+#	Version: 1.0.3.3
 #	Author: hhyykk
 #	Date: 2019-4-29
 #=================================================
-sh_ver="1.0.3.2"
+sh_ver="1.0.3.3"
 docker_file="/usr/bin/docker"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -204,7 +204,7 @@ Create_redis(){
 		if [ -z "${cName}" ];then
 			cName="redis"
 		fi
-		if [ -z "${cPort}"];then
+		if [ -z "${cPort}" ];then
 			cPort="6379"
 		fi
 		
@@ -412,3 +412,4 @@ case "$num" in
 	;;
 esac
 done
+

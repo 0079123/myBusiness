@@ -148,9 +148,9 @@ https://www.douyu.com##.closeBg-998534
 ||https://data.mistat.xiaomi.com
 ||https://tracking.miui.com
 !播放出现问题时  可以删减 此区域的 Host 地址
-！||http://img.cdn.mvideo.xiaomi.com
-！||img.cdn.mvideo.xiaomi.com
-！||https://img.cdn.mvideo.xiaomi.com
+!||http://img.cdn.mvideo.xiaomi.com
+!||img.cdn.mvideo.xiaomi.com
+!||https://img.cdn.mvideo.xiaomi.com
 !=====  通用型：广告投放商 拦截规则  所有电视都可以用 ====
 !友盟+
 ||http://umeng.com
